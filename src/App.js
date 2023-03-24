@@ -77,8 +77,12 @@ function App() {
       <Card sx={{ minWidth: 275, marginTop: 20 }}>
         <CardContent>
           <p>Count: {count}</p>
-          <Button onClick={incrementCounter} variant="outlined">
-            +1
+          <Button
+            onClick={incrementCounter}
+            variant="outlined"
+            disabled={isLoading}
+          >
+            {isLoading ? "loading..." : "+1"}
           </Button>
         </CardContent>
       </Card>
