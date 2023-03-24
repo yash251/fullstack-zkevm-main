@@ -67,10 +67,9 @@ function App() {
     }
   }
 
-  const incrementCounter = () => {
+  const incrementCounter = async () => {
     // we should read currentCount from the blockchain
-    const currentCount = count;
-    setCount(currentCount + 1);
+    await updateCounter();
   };
 
   return (
