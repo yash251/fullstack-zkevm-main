@@ -12,6 +12,7 @@ console.log(counterAddress, "Counter ABI: ", Counter.abi);
 
 function App() {
   const [count, setCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);  
 
   useEffect(() => {
     // declare the data fetching function
@@ -44,6 +45,25 @@ function App() {
           "Switch your MetaMask network to Polygon zkEVM testnet and refresh this page!"
         );
       }
+    }
+  }
+
+  async function requestAccount() {
+    await window.ethereum.request({ method: "eth_requestAccounts" });
+  }
+  
+  async function updateCounter() {
+    if (typeof window.ethereum !== "undefined") {
+      await requestAccount();
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      console.log({ provider });
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(counterAddress, Counter.abi, signer);
+      const transaction = await contract.increment();
+      setIsLoading(true);
+      await transaction.wait();
+      setIsLoading(false);
+      readCounterValue();
     }
   }
 
